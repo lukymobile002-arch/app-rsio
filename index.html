@@ -280,9 +280,9 @@
                 <p class="text-sm text-slate-500 font-medium">Menampilkan <span class="font-bold text-slate-700">{{ filteredData.length }}</span> data</p>
             </div>
 
-            <!-- Tabel Hasil -->
-            <div id="wrapperTabelHasil" class="card overflow-x-auto animate-fade-in-up" style="animation-delay:0.1s">
-                <table id="tabelDataHasil" class="text-center text-sm whitespace-nowrap min-w-[700px]">
+            <!-- Tabel Hasil (Desktop) -->
+            <div id="wrapperTabelHasil" class="card overflow-x-auto animate-fade-in-up hidden md:block" style="animation-delay:0.1s">
+                <table id="tabelDataHasil" class="w-full text-center text-sm whitespace-nowrap">
                     <thead class="table-header">
                         <tr>
                             <th class="p-3 font-semibold text-xs uppercase tracking-wider">Tanggal</th>
@@ -314,15 +314,49 @@
                                 <div class="flex justify-center gap-1">
                                     <button @click="bukaModalEdit(d)" class="w-8 h-8 flex items-center justify-center rounded-lg text-blue-500 hover:bg-blue-50 border border-transparent hover:border-blue-200 transition-all duration-200 active:scale-90" title="Edit">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                    </button>
-                                    <button @click="hapusDataHasil(d.id)" class="w-8 h-8 flex items-center justify-center rounded-lg text-red-400 hover:bg-red-50 border border-transparent hover:border-red-200 transition-all duration-200 active:scale-90" title="Hapus">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                    </button>
-                                </div>
+                            </button>
+                            <button @click="hapusDataHasil(d.id)" class="w-8 h-8 flex items-center justify-center rounded-lg text-red-400 hover:bg-red-50 border border-transparent hover:border-red-200 transition-all duration-200 active:scale-90" title="Hapus">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
+                        </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Cards Hasil (Mobile) -->
+            <div class="space-y-2 md:hidden">
+                <div v-for="(d, idx) in filteredData" :key="'card'+d.id" class="card p-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-[10px] font-bold text-white">{{ idx + 1 }}</div>
+                            <span class="font-bold text-sm text-slate-800">{{ d.shipment }}</span>
+                        </div>
+                        <div class="flex gap-1">
+                            <button @click="bukaModalEdit(d)" class="w-7 h-7 flex items-center justify-center rounded-lg text-blue-500 hover:bg-blue-50 border border-transparent hover:border-blue-200 transition-all duration-200 active:scale-90" title="Edit">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                            </button>
+                            <button @click="hapusDataHasil(d.id)" class="w-7 h-7 flex items-center justify-center rounded-lg text-red-400 hover:bg-red-50 border border-transparent hover:border-red-200 transition-all duration-200 active:scale-90" title="Hapus">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
+                        <div class="text-slate-500">Tanggal</div>
+                        <div class="font-medium text-right">{{ d.tanggal }}</div>
+                        <div class="text-slate-500">Quartz</div>
+                        <div class="font-mono font-medium text-right">{{ d.quarsa }}</div>
+                        <div class="text-slate-500">RSiO2</div>
+                        <div class="font-mono font-bold text-right"><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md border border-emerald-200">{{ d.rsio2 }}</span></div>
+                        <div class="text-slate-500">Silika Total</div>
+                        <div class="font-mono font-bold text-right"><span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md border border-blue-200">{{ d.sio2 }}</span></div>
+                    </div>
+                </div>
+                <div v-if="filteredData.length === 0" class="text-center py-12 text-slate-400">
+                    <svg class="w-16 h-16 mx-auto mb-3 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+                    <p class="text-slate-400 font-medium">Data tidak ditemukan.</p>
+                </div>
             </div>
         </div>
 

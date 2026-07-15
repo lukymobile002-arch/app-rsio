@@ -83,7 +83,7 @@
         .card { @apply bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300; }
         .card-hover:hover { @apply shadow-lg -translate-y-0.5; }
 
-        .table-header { @apply bg-gradient-to-r from-slate-800 to-slate-900 text-white; }
+        .table-header { @apply bg-blue-600 text-white; }
         .table-row { @apply transition-colors duration-150; }
         .table-row:hover { @apply bg-blue-50/80; }
         .dark .table-row:hover { background-color: rgba(59,130,246,0.1); }
@@ -166,11 +166,11 @@
                 <div v-for="(row, index) in sesiInput" :key="row.id" class="card p-1.5">
                     <div class="flex items-center gap-1">
                         <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0">{{ index + 1 }}</div>
-                        <input type="text" v-model="row.shipment" placeholder="Shipment" class="input-modern flex-1 min-w-0 !p-1 !text-[11px]">
-                        <input type="number" step="any" v-model="row.w1" placeholder="W1" class="input-modern !w-14 !p-1 !text-[11px]">
-                        <input type="number" step="any" v-model="row.w2" placeholder="W2" class="input-modern !w-14 !p-1 !text-[11px]">
-                        <input type="number" step="any" v-model="row.w3" placeholder="W3" class="input-modern !w-14 !p-1 !text-[11px]">
-                        <input type="number" step="any" v-model="row.sio2" placeholder="SiO2" class="input-modern !w-14 !p-1 !text-[11px]">
+                        <input type="number" v-model="row.shipment" placeholder="Shipment" @keydown.enter.prevent="focusNextInput" class="input-modern flex-1 min-w-0 !p-1 !text-[11px]">
+                        <input type="number" step="any" v-model="row.w1" placeholder="W1" @keydown.enter.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
+                        <input type="number" step="any" v-model="row.w2" placeholder="W2" @keydown.enter.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
+                        <input type="number" step="any" v-model="row.w3" placeholder="W3" @keydown.enter.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
+                        <input type="number" step="any" v-model="row.sio2" placeholder="SiO2" @keydown.enter.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
                         <button @click="hapusBaris(index)" class="w-6 h-6 flex items-center justify-center rounded-lg text-red-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 active:scale-90 flex-shrink-0">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         </button>
@@ -207,7 +207,7 @@
                             </div>
                             <div class="flex gap-3 font-mono text-sm">
                                 <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-lg border border-amber-200">
-                                    Q: <span class="font-bold">{{ hitungLive(row).q }}</span>
+                                    Quartz: <span class="font-bold">{{ hitungLive(row).q }}</span>
                                 </span>
                                 <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-lg border border-emerald-200">
                                     RSiO2: <span class="font-bold">{{ hitungLive(row).r }}</span>
@@ -277,8 +277,8 @@
                             </th>
                             <th class="p-1.5 font-semibold text-[10px] uppercase tracking-wider">Tgl</th>
                             <th class="p-1.5 font-semibold text-[10px] uppercase tracking-wider">Shipment</th>
-                            <th class="p-1.5 font-semibold text-[10px] uppercase tracking-wider">Q</th>
-                            <th class="p-1.5 font-semibold text-[10px] uppercase tracking-wider bg-emerald-600">RSiO2</th>
+                            <th class="p-1.5 font-semibold text-[10px] uppercase tracking-wider">Quartz</th>
+                            <th class="p-1.5 font-semibold text-[10px] uppercase tracking-wider">RSiO2</th>
                             <th class="p-1.5 font-semibold text-[10px] uppercase tracking-wider">Si</th>
                             <th class="p-1.5 font-semibold text-[10px] uppercase tracking-wider" data-html2canvas-ignore>Aksi</th>
                         </tr>
@@ -492,25 +492,25 @@
 
 
         <!-- Export Container (hidden, for image export) -->
-        <div id="exportContainer" class="fixed" style="left:-9999px;top:0;width:800px;background:white;padding:30px;font-family:Inter,sans-serif;z-index:-1">
-            <div style="text-align:center;margin-bottom:20px;border-bottom:2px solid #1e40af;padding-bottom:15px">
-                <h1 style="font-size:22px;font-weight:800;color:#0f172a;margin:0">Hasil Analisa Reaktif Silika</h1>
-                <p style="font-size:13px;color:#64748b;margin:4px 0 0">RSiO<sub>2</sub> Measurement &amp; Analysis Dashboard</p>
+        <div id="exportContainer" class="fixed" style="left:-9999px;top:0;width:600px;background:white;padding:18px 25px;font-family:Inter,sans-serif;z-index:-1">
+            <div style="text-align:center;margin-bottom:14px;border-bottom:2px solid #1e40af;padding-bottom:10px">
+                <h1 style="font-size:18px;font-weight:800;color:#0f172a;margin:0">Hasil Analisa Reaktif Silika</h1>
+                <p style="font-size:11px;color:#64748b;margin:3px 0 0">RSiO<sub>2</sub> Measurement &amp; Analysis Dashboard</p>
             </div>
-            <table id="exportTable" style="width:100%;border-collapse:collapse;font-size:12px">
+            <table id="exportTable" style="width:100%;border-collapse:collapse;font-size:11px">
                 <thead>
                     <tr style="background:#1e293b;color:white">
-                        <th style="padding:8px 12px;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border:1px solid #334155">No</th>
-                        <th style="padding:8px 12px;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border:1px solid #334155">Tgl</th>
-                        <th style="padding:8px 12px;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border:1px solid #334155">Shipment</th>
-                        <th style="padding:8px 12px;text-align:right;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border:1px solid #334155">Q</th>
-                        <th style="padding:8px 12px;text-align:right;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border:1px solid #334155;background:#059669;font-size:14px">RSiO<sub>2</sub></th>
-                        <th style="padding:8px 12px;text-align:right;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border:1px solid #334155">Si</th>
+                        <th style="padding:5px 6px;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;border:1px solid #334155">No</th>
+                        <th style="padding:5px 6px;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;border:1px solid #334155">Tgl</th>
+                        <th style="padding:5px 6px;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;border:1px solid #334155">Shipment</th>
+                        <th style="padding:5px 6px;text-align:right;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;border:1px solid #334155">Q</th>
+                        <th style="padding:5px 6px;text-align:right;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;border:1px solid #334155;background:#059669;font-size:12px">RSiO<sub>2</sub></th>
+                        <th style="padding:5px 6px;text-align:right;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;border:1px solid #334155">Si</th>
                     </tr>
                 </thead>
                 <tbody id="exportTableBody"></tbody>
             </table>
-            <div style="text-align:center;margin-top:15px;font-size:10px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:12px">
+            <div style="text-align:center;margin-top:10px;font-size:9px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:8px">
                 Generated on <span id="exportDate"></span> &middot; Aplikasi Analisa Reaktif Silika v2.0
             </div>
         </div>
@@ -631,6 +631,30 @@
                 const hapusBaris = (index) => {
                     if (sesiInput.value.length === 1) return alert("Minimal harus ada 1 baris!");
                     sesiInput.value.splice(index, 1);
+                };
+
+                const focusNextInput = (event) => {
+                    const card = event.target.closest('.card');
+                    if (!card) return;
+                    const nextCard = card.nextElementSibling;
+                    const inputs = card.querySelectorAll('.input-modern');
+                    const idx = Array.from(inputs).indexOf(event.target);
+                    if (!nextCard) {
+                        tambahBaris();
+                        nextTick(() => {
+                            const parent = card.parentElement;
+                            const newCard = parent.lastElementChild;
+                            if (newCard) {
+                                const newInputs = newCard.querySelectorAll('.input-modern');
+                                const target = newInputs[idx] || newInputs[0];
+                                if (target) target.focus();
+                            }
+                        });
+                        return;
+                    }
+                    const nextInputs = nextCard.querySelectorAll('.input-modern');
+                    const target = nextInputs[idx] || nextInputs[0];
+                    if (target) target.focus();
                 };
 
                 const hitungLive = (row) => {
@@ -763,12 +787,12 @@
                     dateSpan.textContent = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
                     tbody.innerHTML = data.map((d, i) =>
                         `<tr style="${i % 2 === 0 ? 'background:#f8fafc' : 'background:#ffffff'}">` +
-                            `<td style="padding:8px 12px;text-align:center;border:1px solid #cbd5e1;color:#64748b">${i + 1}</td>` +
-                            `<td style="padding:8px 12px;text-align:center;border:1px solid #cbd5e1;color:#64748b">${formatTanggal(d.tanggal)}</td>` +
-                            `<td style="padding:8px 12px;text-align:center;border:1px solid #cbd5e1;font-weight:700;color:#1e293b">${d.shipment}</td>` +
-                            `<td style="padding:8px 12px;text-align:right;border:1px solid #cbd5e1;font-family:monospace;font-size:13px;color:#475569">${d.quarsa}</td>` +
-                            `<td style="padding:8px 12px;text-align:right;border:1px solid #cbd5e1;font-family:monospace;font-weight:700;font-size:15px;color:#059669">${d.rsio2}</td>` +
-                            `<td style="padding:8px 12px;text-align:right;border:1px solid #cbd5e1;font-family:monospace;font-size:13px;color:#475569">${d.sio2}</td>` +
+                            `<td style="padding:5px 6px;text-align:center;border:1px solid #cbd5e1;color:#64748b">${i + 1}</td>` +
+                            `<td style="padding:5px 6px;text-align:center;border:1px solid #cbd5e1;color:#64748b">${formatTanggal(d.tanggal)}</td>` +
+                            `<td style="padding:5px 6px;text-align:center;border:1px solid #cbd5e1;font-weight:700;color:#1e293b">${d.shipment}</td>` +
+                            `<td style="padding:5px 6px;text-align:right;border:1px solid #cbd5e1;font-family:monospace;font-size:11px;color:#475569">${d.quarsa}</td>` +
+                            `<td style="padding:5px 6px;text-align:right;border:1px solid #cbd5e1;font-family:monospace;font-weight:700;font-size:13px;color:#059669">${d.rsio2}</td>` +
+                            `<td style="padding:5px 6px;text-align:right;border:1px solid #cbd5e1;font-family:monospace;font-size:11px;color:#475569">${d.sio2}</td>` +
                         `</tr>`
                     ).join('');
                     const container = document.getElementById('exportContainer');
@@ -780,17 +804,7 @@
                         const captured = await html2canvas(container, { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false });
                         container.style.left = origLeft;
                         container.style.zIndex = origZIndex;
-                        const w4 = captured.width;
-                        const h3 = Math.round(w4 * 3 / 4);
-                        const finalCanvas = document.createElement('canvas');
-                        finalCanvas.width = w4;
-                        finalCanvas.height = h3;
-                        const ctx = finalCanvas.getContext('2d');
-                        ctx.fillStyle = '#ffffff';
-                        ctx.fillRect(0, 0, w4, h3);
-                        const s = Math.min(w4 / captured.width, h3 / captured.height);
-                        ctx.drawImage(captured, (w4 - captured.width * s) / 2, (h3 - captured.height * s) / 2, captured.width * s, captured.height * s);
-                        finalCanvas.toBlob(blob => {
+                        captured.toBlob(blob => {
                             const url = URL.createObjectURL(blob);
                             const a = document.createElement('a');
                             a.href = url;
@@ -814,7 +828,7 @@
                     setHariIni, tambahBaris, hapusBaris, hitungLive, buatHalamanBaru,
                     bukaModalEdit, simpanEdit, hapusDataHasil,
                     exportExcel, exportGambar, backupDataJSON, restoreDataJSON,
-                    selectedExport, formatTanggal, allSelected, toggleAllCheckbox
+                    selectedExport, formatTanggal, allSelected, toggleAllCheckbox, focusNextInput
                 };
             }
         }).mount('#app');

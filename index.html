@@ -166,11 +166,11 @@
                 <div v-for="(row, index) in sesiInput" :key="row.id" class="card p-1.5">
                     <div class="flex items-center gap-1">
                         <div class="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0">{{ index + 1 }}</div>
-                        <input type="number" v-model="row.shipment" placeholder="Shipment" @keydown.enter.prevent="focusNextInput" class="input-modern flex-1 min-w-0 !p-1 !text-[11px]">
-                        <input type="number" step="any" v-model="row.w1" placeholder="W1" @keydown.enter.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
-                        <input type="number" step="any" v-model="row.w2" placeholder="W2" @keydown.enter.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
-                        <input type="number" step="any" v-model="row.w3" placeholder="W3" @keydown.enter.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
-                        <input type="number" step="any" v-model="row.sio2" placeholder="SiO2" @keydown.enter.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
+                        <input type="number" v-model="row.shipment" placeholder="Shipment" @keydown.enter.prevent="focusNextInput" @keydown.tab.prevent="focusNextInput" class="input-modern flex-1 min-w-0 !p-1 !text-[11px]">
+                        <input type="number" step="any" v-model="row.w1" placeholder="W1" @keydown.enter.prevent="focusNextInput" @keydown.tab.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
+                        <input type="number" step="any" v-model="row.w2" placeholder="W2" @keydown.enter.prevent="focusNextInput" @keydown.tab.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
+                        <input type="number" step="any" v-model="row.w3" placeholder="W3" @keydown.enter.prevent="focusNextInput" @keydown.tab.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
+                        <input type="number" step="any" v-model="row.sio2" placeholder="SiO2" @keydown.enter.prevent="focusNextInput" @keydown.tab.prevent="focusNextInput" class="input-modern !w-14 !p-1 !text-[11px]">
                         <button @click="hapusBaris(index)" class="w-6 h-6 flex items-center justify-center rounded-lg text-red-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 active:scale-90 flex-shrink-0">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         </button>
@@ -634,27 +634,29 @@
                 };
 
                 const focusNextInput = (event) => {
-                    const card = event.target.closest('.card');
-                    if (!card) return;
-                    const nextCard = card.nextElementSibling;
-                    const inputs = card.querySelectorAll('.input-modern');
+                    const container = event.target.closest('.space-y-2');
+                    if (!container) return;
+                    const cards = container.querySelectorAll(':scope > .card');
+                    const currentCard = event.target.closest('.card');
+                    const cardIdx = Array.from(cards).indexOf(currentCard);
+                    const inputs = currentCard.querySelectorAll('.input-modern');
                     const idx = Array.from(inputs).indexOf(event.target);
-                    if (!nextCard) {
+                    if (cardIdx < cards.length - 1) {
+                        const nextInputs = cards[cardIdx + 1].querySelectorAll('.input-modern');
+                        const target = nextInputs[idx] || nextInputs[0];
+                        if (target) target.focus();
+                    } else {
                         tambahBaris();
                         nextTick(() => {
-                            const parent = card.parentElement;
-                            const newCard = parent.lastElementChild;
+                            const newCards = container.querySelectorAll(':scope > .card');
+                            const newCard = newCards[newCards.length - 1];
                             if (newCard) {
                                 const newInputs = newCard.querySelectorAll('.input-modern');
                                 const target = newInputs[idx] || newInputs[0];
                                 if (target) target.focus();
                             }
                         });
-                        return;
                     }
-                    const nextInputs = nextCard.querySelectorAll('.input-modern');
-                    const target = nextInputs[idx] || nextInputs[0];
-                    if (target) target.focus();
                 };
 
                 const hitungLive = (row) => {
